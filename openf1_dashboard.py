@@ -62,25 +62,37 @@ st.markdown("""
     font-weight: 500;
     font-size: 14px;
   }
-  .stSelectbox [data-baseweb="select"] {
-    background: #222222 !important;
-    border-color: #444 !important;
+  /* The closed select box */
+  .stSelectbox [data-baseweb="select"] > div {
+    background-color: #2a2a2a !important;
+    border-color: #555 !important;
+    color: #f0f0f0 !important;
   }
   .stSelectbox [data-baseweb="select"] * {
     color: #f0f0f0 !important;
+    background-color: #2a2a2a !important;
   }
-  /* Dropdown list options — rendered on light bg, so force dark text */
-  [data-baseweb="popover"] li,
-  [data-baseweb="menu"] li,
-  [role="option"],
+  /* The open dropdown list — force dark background + light text */
+  [data-baseweb="popover"],
+  [data-baseweb="popover"] *,
+  [data-baseweb="menu"],
+  [data-baseweb="menu"] *,
+  ul[role="listbox"],
+  ul[role="listbox"] * {
+    background-color: #2a2a2a !important;
+    color: #f0f0f0 !important;
+  }
+  li[role="option"],
   [data-baseweb="option"] {
-    color: #111111 !important;
-    font-weight: 500;
+    background-color: #2a2a2a !important;
+    color: #f0f0f0 !important;
   }
+  li[role="option"]:hover,
   [data-baseweb="option"]:hover,
-  [role="option"]:hover {
-    background: #f0f0f0 !important;
-    color: #000000 !important;
+  li[aria-selected="true"],
+  [aria-selected="true"] {
+    background-color: #e10600 !important;
+    color: #ffffff !important;
   }
 
   /* Metric cards */
