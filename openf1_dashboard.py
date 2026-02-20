@@ -69,6 +69,19 @@ st.markdown("""
   .stSelectbox [data-baseweb="select"] * {
     color: #f0f0f0 !important;
   }
+  /* Dropdown list options — rendered on light bg, so force dark text */
+  [data-baseweb="popover"] li,
+  [data-baseweb="menu"] li,
+  [role="option"],
+  [data-baseweb="option"] {
+    color: #111111 !important;
+    font-weight: 500;
+  }
+  [data-baseweb="option"]:hover,
+  [role="option"]:hover {
+    background: #f0f0f0 !important;
+    color: #000000 !important;
+  }
 
   /* Metric cards */
   [data-testid="metric-container"] {
@@ -330,6 +343,15 @@ with st.sidebar:
 
     st.markdown("---")
     st.caption("Data: [openf1.org](https://openf1.org) · Free historical data from 2023+")
+    st.markdown("""
+<div style="margin-top:12px;font-size:13px;color:#aaaaaa;line-height:1.8">
+  Created by <span style="color:#ffffff;font-weight:600">Jorg van de Ven</span><br>
+  <a href="https://jorgvandeven.nl/?utm_source=streamlit&utm_medium=referral&utm_campaign=f1_dashboard"
+     target="_blank" style="color:#e10600;text-decoration:none;">🌐 jorgvandeven.nl</a><br>
+  <a href="https://www.linkedin.com/in/jorgvandeven/"
+     target="_blank" style="color:#e10600;text-decoration:none;">💼 LinkedIn</a>
+</div>
+""", unsafe_allow_html=True)
 
 # ─── Header ───────────────────────────────────────────────────────────────────
 col_h1, col_h2 = st.columns([3, 1])
@@ -786,8 +808,8 @@ with tab_positions:
                 pos_df = pos_df[pos_df["team_name"] == selected_team]
 
             if "date" in pos_df.columns:
-                pos_df["date"] = pd.to_datetime(pos_df["date"])
-                pos_df = pos_df.sort_values("date")
+                pos_df["date"] = pd.to_datetime(pos_df["date"], errors="coerce")
+                pos_df = pos_df.dropna(subset=["date"]).sort_values("date")
 
             if "position" in pos_df.columns and "date" in pos_df.columns:
                 st.markdown('<div class="section-header">Position Over Time</div>', unsafe_allow_html=True)
@@ -816,8 +838,8 @@ with tab_weather:
             st.warning("No weather data available.")
         else:
             if "date" in weather_df.columns:
-                weather_df["date"] = pd.to_datetime(weather_df["date"])
-                weather_df = weather_df.sort_values("date")
+                weather_df["date"] = pd.to_datetime(weather_df["date"], errors="coerce")
+                weather_df = weather_df.dropna(subset=["date"]).sort_values("date")
 
             numeric_cols = ["air_temperature", "track_temperature", "humidity",
                             "wind_speed", "rainfall", "pressure"]
